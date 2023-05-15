@@ -1,21 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientManagementAPI.Models.Dto
 {
-    public class ClientDTO
+    public class CompanyCreateDTO
     {
-        public int Id { get; set; }
         [Required]
-        [MaxLength(30)]
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; } = string.Empty;
+        public string Name { get; set; }
         [Required]
-        [MaxLength(30)]
-        public string LastName { get; set; }
-        [Required]
-        public int CompanyId { get; set; }
-        [Required]
-        public int Age { get; set; }
+        public string ContactNumber { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]

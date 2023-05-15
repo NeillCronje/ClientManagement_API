@@ -3,22 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientManagementAPI.Models
 {
-    public class Client
+    public class Company
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; } = string.Empty;
+        public string Name { get; set; }
         [Required]
-        public string LastName { get; set; }
-        [ForeignKey("Company")]
-        public int CompanyId { get; set; }
-        [Required]
-        public Company Company { get; set; }
-        [Required]
-        public int Age { get; set; }
+        public string ContactNumber { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
@@ -29,6 +22,8 @@ namespace ClientManagementAPI.Models
         public string Region { get; set; }
         [Required]
         public string PostalCode { get; set; }
+        //[Required]
+        //public List<Client> Clients { get; set; }
         public DateTime CreatedDate { get; set; }
         public bool Deleted { get; set; }
         public DateTime ModifiedDate { get; set; }

@@ -1,22 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ClientManagementAPI.Models
+namespace ClientManagementAPI.Models.Dto
 {
-    public class Client
+    public class ClientCreateDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         [Required]
+        [MaxLength(30)]
         public string FirstName { get; set; }
         public string MiddleName { get; set; } = string.Empty;
         [Required]
+        [MaxLength(30)]
         public string LastName { get; set; }
-        [ForeignKey("Company")]
-        public int CompanyId { get; set; }
         [Required]
-        public Company Company { get; set; }
+        public int CompanyId { get; set; }
         [Required]
         public int Age { get; set; }
         [Required]
@@ -29,9 +25,5 @@ namespace ClientManagementAPI.Models
         public string Region { get; set; }
         [Required]
         public string PostalCode { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public bool Deleted { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public DateTime DeletedDate { get; set; }
     }
 }
