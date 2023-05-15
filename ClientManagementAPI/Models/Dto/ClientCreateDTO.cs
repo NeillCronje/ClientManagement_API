@@ -12,7 +12,7 @@ namespace ClientManagementAPI.Models.Dto
         [MaxLength(30)]
         public string LastName { get; set; }
         [Required]
-        public int CompanyId { get; set; }
+        public int AccountId { get; set; }
         [Required]
         public int Age { get; set; }
         [Required]

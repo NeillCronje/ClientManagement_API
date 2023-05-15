@@ -11,14 +11,14 @@ namespace ClientManagementAPI
             CreateMap<Client, ClientDTO>();
             CreateMap<ClientDTO, Client>();
 
-            CreateMap<Company, CompanyDTO>();
-            CreateMap<CompanyDTO, Company>();
+            CreateMap<Account, AccountDTO>();
+            CreateMap<AccountDTO, Account>();
 
             CreateMap<Client, ClientCreateDTO>().ReverseMap();
             CreateMap<Client, ClientUpdateDTO>().ReverseMap();
 
-            CreateMap<Company, CompanyCreateDTO>().ReverseMap();
-            CreateMap<Company, CompanyUpdateDTO>().ReverseMap();
+            CreateMap<Account, AccountCreateDTO>().ReverseMap();
+            CreateMap<Account, AccountUpdateDTO>().ReverseMap();
         }
     }
 }

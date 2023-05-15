@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 
 namespace ClientManagementAPI.Repository.IRepository
 {
-    public interface ICompanyRepository : IRepository<Company>
+    public interface IAccountRepository : IRepository<Account>
     {
-        public Task<Company> UpdateCompanyAsync(Company client);
+        public Task<Account> UpdateAccountAsync(Account client);
     }
 }

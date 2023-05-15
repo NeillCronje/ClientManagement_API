@@ -6,21 +6,21 @@ using System.Linq.Expressions;
 
 namespace ClientManagementAPI.Repository
 {
-    public class ClientRepository : Repository<Client>, IClientRepository
+    public class AccountRepository : Repository<Account>, IAccountRepository
     {
         private readonly ApiContext _db;
-        public ClientRepository(ApiContext db): base(db)
+        public AccountRepository(ApiContext db): base(db)
         {
             _db = db;
         }
 
-        public async Task<Client> UpdateClientAsync(Client client)
+        public async Task<Account> UpdateAccountAsync(Account account)
         {
-            client.ModifiedDate = DateTime.Now;
-            _db.Clients.Update(client);
+            account.ModifiedDate = DateTime.Now;
+            _db.Accounts.Update(account);
             await _db.SaveChangesAsync();
 
-            return client;
+            return account;
         }
     }
 }

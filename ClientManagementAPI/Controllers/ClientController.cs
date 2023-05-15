@@ -20,16 +20,20 @@ namespace ClientManagementAPI.Controllers
     {
         protected APIResponse _response;
         private readonly IClientRepository _dbClient;
-        private readonly ICompanyRepository _dbCompany;
+        private readonly IAccountRepository _dbAccount;
         private readonly IMapper _mapper;
-        public ClientController(IClientRepository dbClient, ICompanyRepository dbCompany, IMapper mapper)
+        public ClientController(IClientRepository dbClient, IAccountRepository dbAccount, IMapper mapper)
         {
             _dbClient = dbClient;
-            _dbCompany = dbCompany;
+            _dbAccount = dbAccount;
             _mapper = mapper;
             this._response = new();
         }
 
+        /// <summary>
+        /// Gets all clients
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetClients")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -39,6 +43,13 @@ namespace ClientManagementAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccessful = false;
+                    return BadRequest(_response);
+                }
+
                 IEnumerable<Client> clientList = await _dbClient.GetAllAsync();
 
                 _response.Result = _mapper.Map<List<ClientDTO>>(clientList);
@@ -55,6 +66,11 @@ namespace ClientManagementAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Gets a client by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id:int}", Name = "GetClient")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -66,6 +82,13 @@ namespace ClientManagementAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccessful = false;
+                    return BadRequest(_response);
+                }
+
                 if (id == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
@@ -94,6 +117,11 @@ namespace ClientManagementAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Creates a new client
+        /// </summary>
+        /// <param name="createDTO"></param>
+        /// <returns></returns>
         [HttpPost(Name = "CreateClient")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -120,9 +148,9 @@ namespace ClientManagementAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                if(await _dbCompany.GetAllAsync(co => co.Id == createDTO.CompanyId) == null)
+                if(await _dbAccount.GetAllAsync(co => co.Id == createDTO.AccountId) == null)
                 {
-                    _response.ErrorMessages = new List<string>() { "Company with the same ID already exists" };
+                    _response.ErrorMessages = new List<string>() { "Account with the same ID already exists" };
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.IsSuccessful = false;
                     return BadRequest(_response);
@@ -153,6 +181,11 @@ namespace ClientManagementAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Delete a client by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id:int}", Name = "DeleteClient")]
         [Authorize (Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -201,6 +234,12 @@ namespace ClientManagementAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Updates a client with all details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updateDTO"></param>
+        /// <returns></returns>
         [HttpPut("{id:int}", Name = "UpdateClient")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -225,9 +264,9 @@ namespace ClientManagementAPI.Controllers
                     return NotFound(_response);
                 }
 
-                if (await _dbCompany.GetAllAsync(co => co.Id == updateDTO.CompanyId) == null)
+                if (await _dbAccount.GetAllAsync(co => co.Id == updateDTO.AccountId) == null)
                 {
-                    _response.ErrorMessages = new List<string>() { "Invalid company ID" };
+                    _response.ErrorMessages = new List<string>() { "Invalid Account ID" };
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.IsSuccessful = false;
                     return BadRequest(_response);
@@ -249,6 +288,12 @@ namespace ClientManagementAPI.Controllers
             return _response;
         }
 
+        /// <summary>
+        /// Patches client with particular field
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="patchDTO"></param>
+        /// <returns></returns>
         [HttpPatch("{id:int}", Name = "UpdatePartialClient")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

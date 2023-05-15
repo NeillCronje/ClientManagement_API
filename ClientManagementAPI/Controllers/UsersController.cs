@@ -19,6 +19,11 @@ namespace ClientManagementAPI.Controllers
             this._response = new();
         }
 
+        /// <summary>
+        /// Logs in to grant access to the endpoints
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
@@ -37,6 +42,11 @@ namespace ClientManagementAPI.Controllers
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Registers a new user to use the system
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {

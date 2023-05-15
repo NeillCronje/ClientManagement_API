@@ -13,10 +13,8 @@ namespace ClientManagementAPI.Models
         public string MiddleName { get; set; } = string.Empty;
         [Required]
         public string LastName { get; set; }
-        [ForeignKey("Company")]
-        public int CompanyId { get; set; }
         [Required]
-        public Company Company { get; set; }
+        public List<Account> Account { get; set; }
         [Required]
         public int Age { get; set; }
         [Required]
@@ -30,8 +28,6 @@ namespace ClientManagementAPI.Models
         [Required]
         public string PostalCode { get; set; }
         public DateTime CreatedDate { get; set; }
-        public bool Deleted { get; set; }
         public DateTime ModifiedDate { get; set; }
-        public DateTime DeletedDate { get; set; }
     }
 }
