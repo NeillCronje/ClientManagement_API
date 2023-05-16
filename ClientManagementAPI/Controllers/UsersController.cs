@@ -25,7 +25,7 @@ namespace ClientManagementAPI.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
+        public async Task<ActionResult<APIResponse>> Login([FromBody] LoginRequestDTO model)
         {
             var loginResponse = await _userRepo.Login(model);
 
@@ -48,7 +48,7 @@ namespace ClientManagementAPI.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
+        public async Task<ActionResult<APIResponse>> Register([FromBody] RegistrationRequestDTO model)
         {
             bool uniqueUserName = _userRepo.IsUniqueUser(model.UserName);
 

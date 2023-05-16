@@ -53,6 +53,10 @@ namespace ClientManagementAPI.Repository
 
         public async Task RemoveAsync(T entity)
         {
+            if (!dbSet.Any())
+            {
+                return;
+            }
             dbSet.Remove(entity);
             await SaveAsync();
         }

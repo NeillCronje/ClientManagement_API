@@ -18,11 +18,11 @@ namespace ClientManagementAPI.Controllers
     public class AccountController : ControllerBase
     {
         protected APIResponse _response;
-        private readonly IAccountRepository _dbClient;
+        private readonly IAccountRepository _dbAccount;
         private readonly IMapper _mapper;
-        public AccountController(IAccountRepository dbClient, IMapper mapper)
+        public AccountController(IAccountRepository dbAccount, IMapper mapper)
         {
-            _dbClient = dbClient;
+            _dbAccount = dbAccount;
             _mapper = mapper;
             this._response = new();
         }
@@ -45,7 +45,7 @@ namespace ClientManagementAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                IEnumerable<Account> clientList = await _dbClient.GetAllAsync();
+                IEnumerable<Account> clientList = await _dbAccount.GetAllAsync();
 
                 _response.Result = _mapper.Map<List<AccountDTO>>(clientList);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -88,7 +88,7 @@ namespace ClientManagementAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                var account = await _dbClient.GetAsync(u => u.Id == id);
+                var account = await _dbAccount.GetAsync(u => u.Id == id);
 
                 if (account == null)
                 {
@@ -131,9 +131,9 @@ namespace ClientManagementAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                if (await _dbClient.GetAsync(u => u.Number.ToLower() == createDTO.Number.ToLower()) != null)
+                if (await _dbAccount.GetAsync(u => u.Number.ToLower() == createDTO.Number.ToLower()) != null)
                 {
-                    _response.ErrorMessages = new List<string>() { "Email address already exists" };
+                    _response.ErrorMessages = new List<string>() { "Account number already exists" };
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.IsSuccessful = false;
                     return BadRequest(_response);
@@ -147,7 +147,7 @@ namespace ClientManagementAPI.Controllers
 
                 Account account = _mapper.Map<Account>(createDTO);
 
-                await _dbClient.CreateAsync(account);
+                await _dbAccount.CreateAsync(account);
 
                 _response.Result = _mapper.Map<AccountDTO>(account);
                 _response.StatusCode = HttpStatusCode.Created;
@@ -185,7 +185,7 @@ namespace ClientManagementAPI.Controllers
                     _response.IsSuccessful = false;
                     return BadRequest(_response);
                 }
-                var account = await _dbClient.GetAsync(u => u.Id == id);
+                var account = await _dbAccount.GetAsync(u => u.Id == id);
 
                 if (account == null)
                 {
@@ -194,7 +194,7 @@ namespace ClientManagementAPI.Controllers
                     return NotFound();
                 }
 
-                await _dbClient.RemoveAsync(account);
+                await _dbAccount.RemoveAsync(account);
 
                 _response.StatusCode = HttpStatusCode.NoContent;
 
@@ -233,7 +233,7 @@ namespace ClientManagementAPI.Controllers
 
                 Account model = _mapper.Map<Account>(updateDTO);
 
-                await _dbClient.UpdateAccountAsync(model);
+                await _dbAccount.UpdateAccountAsync(model);
 
                 _response.StatusCode = HttpStatusCode.NoContent;
                 return Ok(_response);
@@ -269,7 +269,7 @@ namespace ClientManagementAPI.Controllers
                     return NotFound(_response);
                 }
 
-                var account = await _dbClient.GetAsync(u => u.Id == id, false);
+                var account = await _dbAccount.GetAsync(u => u.Id == id, false);
 
                 AccountUpdateDTO accountDTO = _mapper.Map<AccountUpdateDTO>(account);
 
@@ -285,7 +285,7 @@ namespace ClientManagementAPI.Controllers
                 Account model = _mapper.Map<Account>(accountDTO);
 
 
-                await _dbClient.UpdateAccountAsync(model);
+                await _dbAccount.UpdateAccountAsync(model);
 
                 _response.StatusCode = HttpStatusCode.NoContent;
                 return Ok(_response);

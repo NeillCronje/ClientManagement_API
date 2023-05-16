@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace ClientManagementAPI.Controllers
 {
@@ -148,7 +149,19 @@ namespace ClientManagementAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                if(await _dbAccount.GetAllAsync(co => co.Id == createDTO.AccountId) == null)
+                string email = createDTO.Email;
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(email);
+                if (!match.Success)
+                {
+                    _response.ErrorMessages = new List<string>() { "Email address is not valid" };
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccessful = false;
+                    return BadRequest(_response);
+                }
+
+
+                    if (await _dbAccount.GetAllAsync(co => co.Id == createDTO.AccountId) == null)
                 {
                     _response.ErrorMessages = new List<string>() { "Account with the same ID already exists" };
                     _response.StatusCode = HttpStatusCode.BadRequest;

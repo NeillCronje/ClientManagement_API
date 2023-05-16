@@ -26,7 +26,7 @@ namespace ClientManagement.Tests.Repository
         }
 
         [Fact]
-        public async void ClientRepository_GetAccount_ReturnsAccount()
+        public async void AccountRepository_GetAccount_ReturnsAccount()
         {
             //Arrange
             var id = 2;
@@ -39,88 +39,93 @@ namespace ClientManagement.Tests.Repository
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<Task<Account>>();
+            Assert.True(result.IsCompletedSuccessfully);
+            Assert.False(result.IsFaulted);
         }
 
         [Fact]
-        public async void ClientRepository_GetAllClient_ReturnsAllClients()
+        public async void AccountRepository_GetAllAccount_ReturnsAllAccounts()
         {
             //Arrange
             var dbContext = await GetDatabaseContext();
-            var clientRepo = new ClientRepository(dbContext);
+            var accountRepo = new AccountRepository(dbContext);
 
             //Act
-            var result = await clientRepo.GetAllAsync(null);
+            var result = await accountRepo.GetAllAsync(null);
 
             //Assert
             result.Should().NotBeNull();
-            result.Should().BeOfType<List<Client>>();
+            result.Should().BeOfType<List<Account>>();
         }
 
         [Fact]
         public async void ClientRepository_RemoveClient_ReturnsOk()
         {
             //Arrange
-            var clientToRemove = new Client();
+            var accountToRemove = new Account();
             var dbContext = await GetDatabaseContext();
-            var clientRepo = new ClientRepository(dbContext);
+            var accountRepo = new AccountRepository(dbContext);
 
             //Act
-            var result = clientRepo.RemoveAsync(clientToRemove);
+            var result = accountRepo.RemoveAsync(accountToRemove);
 
             //Assert
             result.Should().NotBeNull();
+            Assert.True(result.IsCompletedSuccessfully);
+            Assert.False(result.IsFaulted);
         }
 
         [Fact]
-        public async void ClientRepository_CreateClient_ReturnsCreatedClient()
+        public async void AccountRepository_CreateAccount_ReturnsCreatedAccount()
         {
             //Arrange
-            var clientToAdd = new Client()
-            {
-                Address = "New Address",
-                Age = 77,
-                City = "Delft",
-                Email = "DelftPunk@gmail.com",
-                FirstName = "NoScoped720",
-                LastName = "SniperLord",
-                PostalCode = "12345",
-                Region = "Netherlands"
-            };
-            var dbContext = await GetDatabaseContext();
-            var clientRepo = new ClientRepository(dbContext);
-
-            //Act
-            var result = clientRepo.CreateAsync(clientToAdd);
-
-            //Assert
-            result.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async void ClientRepository_UpdateClient_ReturnsUpdatedClient()
-        {
-            //Arrange
-            var clientToUpdate = new Client()
+            var accountToAdd = new Account()
             {
                 Id = 1,
-                Address = "New Address 2",
-                Age = 88,
-                City = "Delft 2",
-                Email = "DelftPunk22@gmail.com",
-                FirstName = "NoScoped420",
-                LastName = "CamperLord",
-                PostalCode = "54321",
-                Region = "Netherlands"
+                BankName = "Test",
+                BranchCode = "0123",
+                Card = "12345643654654654",
+                Name = "UpdateTest",
+                Number = "123456789123456789",
+                Type = AccountType.Savings
             };
             var dbContext = await GetDatabaseContext();
-            var clientRepo = new ClientRepository(dbContext);
+            var accountRepo = new AccountRepository(dbContext);
 
             //Act
-            var result = clientRepo.UpdateClientAsync(clientToUpdate);
+            var result = accountRepo.CreateAsync(accountToAdd);
 
             //Assert
             result.Should().NotBeNull();
-            result.Should().BeOfType<Task<Client>>();
+            Assert.True(result.IsCompletedSuccessfully);
+            Assert.False(result.IsFaulted);
+        }
+
+        [Fact]
+        public async void AccountRepository_UpdateAccount_ReturnsUpdatedAccount()
+        {
+            //Arrange
+            var accountToUpdate = new Account()
+            {
+                Id = 1,
+                BankName = "Test",
+                BranchCode = "0123",
+                Card = "12345643654654654",
+                Name = "UpdateTest",
+                Number = "123456789123456789",
+                Type = AccountType.Savings
+            };
+            var dbContext = await GetDatabaseContext();
+            var accountRepo = new AccountRepository(dbContext);
+
+            //Act
+            var result = accountRepo.UpdateAccountAsync(accountToUpdate);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<Task<Account>>();
+            Assert.True(result.IsCompletedSuccessfully);
+            Assert.False(result.IsFaulted);
         }
     }
 }

@@ -41,10 +41,12 @@ namespace ClientManagement.Tests.Controllers
 
             //Assert
             result.Should().NotBeNull();
+            Assert.False(result.IsFaulted);
+            Assert.True(result.IsCompletedSuccessfully);
         }
 
         [Fact]
-        public void ClientController_Getclient_ReturnOK()
+        public void ClientController_GetClient_ReturnOK()
         {
             //Arrange
             int id = 1;
@@ -57,6 +59,56 @@ namespace ClientManagement.Tests.Controllers
 
             //Assert
             result.Should().NotBeNull();
+            Assert.False(result.IsFaulted);
+            Assert.True(result.IsCompletedSuccessfully);
+        }
+
+        [Fact]
+        public void ClientController_RemoveClient_ReturnOK()
+        {
+            //Arrange
+            int id = 1;
+            var client = A.Fake<ClientDTO>();
+            A.CallTo(() => _mapper.Map<ClientDTO>(client));
+            var controller = new ClientController(_dbClient, _dbAccount, _mapper);
+
+            //Act
+            var result = controller.DeleteClient(id);
+
+            //Assert
+            result.Should().NotBeNull();
+            Assert.False(result.IsFaulted);
+            Assert.True(result.IsCompletedSuccessfully);
+        }
+
+        [Fact]
+        public void ClientController_UpdateClient_ReturnOK()
+        {
+            //Arrange
+            ClientUpdateDTO updateClient = new ClientUpdateDTO()
+            {
+                Id = 1,
+                FirstName = "Test",
+                MiddleName = "Update",
+                LastName = "Successful",
+                Address = "Test Address 12",
+                Age = 70,
+                City = "Test City",
+                PostalCode = "5123",
+                Region = "Test Region",
+                Email = "TestEmail@test.com"
+            };
+            var client = A.Fake<ClientDTO>();
+            A.CallTo(() => _mapper.Map<ClientDTO>(client));
+            var controller = new ClientController(_dbClient, _dbAccount, _mapper);
+
+            //Act
+            var result = controller.UpdateClient(updateClient.Id, updateClient);
+
+            //Assert
+            result.Should().NotBeNull();
+            Assert.False(result.IsFaulted);
+            Assert.True(result.IsCompletedSuccessfully);
         }
     }
 }

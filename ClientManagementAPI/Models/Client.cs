@@ -13,7 +13,6 @@ namespace ClientManagementAPI.Models
         public string MiddleName { get; set; } = string.Empty;
         [Required]
         public string LastName { get; set; }
-        [Required]
         public List<Account> Account { get; set; }
         [Required]
         public int Age { get; set; }
